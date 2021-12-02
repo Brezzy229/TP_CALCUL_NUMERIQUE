@@ -1,4 +1,4 @@
-
+/*
 // --------------- Cas n = 3 -------------------------------
 
 // 1 Matrice A de taille 3* 3 en utilisant la fonction rand()
@@ -29,7 +29,7 @@ cond_1 = cond(A_1)
 prod_1 = cond_1 * relres_1
 
 
-/*
+
 //--------------------Cas n = 100 ----------------------
 
 // 1 Matrice A de taille 3* 3 en utilisant la fonction rand()
@@ -110,3 +110,18 @@ relres_4 = norm(b_4 - (A_4*xex4_estime),2) / (norm(A_4,2) * norm(xex4_estime,2))
 cond_4 = cond(A_4);
 prod_4 = cond_4 * relres_4
 */
+
+
+// Tracé des courbes des erreurs en fonction de la taille des matrices
+
+x = [3,100, 1000];
+y_1 = [4.59,1.57e-14, 1.74e-12]; 
+y_2 = [6.03e-17,2.95e-16,1.27e-15];
+
+plot2d(x,y_1);
+plot2d(x,y_2);
+f = gcf();
+f.figure_name = 'Evolutions des erreurs en fonctions de la tailles des matrices'
+xclick();
+
+

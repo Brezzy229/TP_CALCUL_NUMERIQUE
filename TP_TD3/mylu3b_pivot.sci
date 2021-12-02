@@ -1,4 +1,4 @@
-function [L,U] = mylu(A)
+function [L,U] = mylu_pivot(A)
     n=size(A,1);
     m = size(A,2);
     for k = 1:n-1

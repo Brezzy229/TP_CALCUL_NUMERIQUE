@@ -1,9 +1,12 @@
 exec("matmat3b.sci");
 exec("matmat2b.sci");
 exec("matmat1b.sci");
+
+/*
 // n = 10
-A10 = rand(10,10);
-B10 = rand(10,10);
+n = 100
+A10 = rand(n,n);
+B10 = rand(n,n);
 
 tic()
 C10_3 = matmat3b(A10,B10);
@@ -120,3 +123,12 @@ t62= toc();
 tic()
 C1000_800_1 =  matmat1b(A1000_200,B200_800);
 t61 = toc();
+*/
+
+// Tracé des courbes des erreurs en fonction de la taille des matrices
+clf();
+x = [20,40,60,80,100]';
+y_1 = [0.0131,0.113,0.323,0.848,1.81]'; 
+y_2 = [0.00175,0.005,0.0112,0.0213,0.0413]';
+y_3 = [0.000136,0.000276,0.000651,0.00142,0.00247]';
+plot2d([x],[y_1]);
