@@ -6,9 +6,22 @@
 #include "lib_poisson1D.h"
 
 void set_GB_operator_rowMajor_poisson1D(double* AB, int *lab, int *la){
-
-  //TODO
+   int ii, jj, kk;
+    for(ii = 0; ii < (*lab); ii++)
+    {
+        kk = ii * (*la);
+        for(int p = 0; p < (*la) ; p++)
+        {
+            if(ii % 2 == 0)
+                AB[kk + p] = -1.0;
+            else
+                AB[kk + p] = 2.0;
+        }
+        AB[0] = 0.0;
+        AB[(*lab) * (*la) - 1] = 0.0;
+    }
 }
+
 void set_GB_operator_colMajor_poisson1D(double* AB, int *lab, int *la, int *kv){
   int ii, jj, kk;
   for (jj=0;jj<(*la);jj++){
@@ -91,8 +104,26 @@ void write_GB_operator_rowMajor_poisson1D(double* AB, int* lab, int* la, char* f
   }
 }
 
-void write_GB_operator_colMajor_poisson1D(double* AB, int* lab, int* la, char* filename){
-  //TODO
+// expliquer comment j'ai fait
+void write_GB_operator_colMajor_poisson1D(double* AB, int *lab, int *la, char* filename)
+{
+    FILE * file;
+    int ii,jj;
+    file = fopen(filename,"w");
+    //Numbering from 1 to la
+    if(file != NULL){
+        for(jj = 0; jj < (*la); jj++){
+            for(ii = 0; ii <(*lab); ii++)
+            {
+                fprintf(file,"%lf\t",AB[ii*(*la)+jj]);
+            }
+            fprintf(file,"\n");
+        }
+        fclose(file);
+    }
+    else{
+        perror(filename);
+    }
 }
 
 void write_vec(double* vec, int* la, char* filename){
