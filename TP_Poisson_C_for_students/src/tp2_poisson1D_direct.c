@@ -16,10 +16,17 @@ int main(int argc,char *argv[])
   int info;
   int NRHS;
   double T0, T1;
-  double *RHS, *EX_SOL, *X;
+  double *RHS, *EX_SOL, *X, *X_test_dgmv, *Y_test_dgmv;
   double *AB;
-
+    
   double temp, relres;
+  //
+  double alpha = 0;
+  double beta  = 10.0;
+  int   incx   = 1;
+  int   incy   = 1;
+  
+  
 
   NRHS=1;
   nbpoints=102;
@@ -31,10 +38,20 @@ int main(int argc,char *argv[])
   RHS=(double *) malloc(sizeof(double)*la);
   EX_SOL=(double *) malloc(sizeof(double)*la);
   X=(double *) malloc(sizeof(double)*la);
+  
+  //
+  X_test_dgmv =(double *) malloc(sizeof (double) * la);
+  Y_test_dgmv =(double*) malloc(sizeof (double) * la);                                                          
 
   set_grid_points_1D(X, &la);
   set_dense_RHS_DBC_1D(RHS,&la,&T0,&T1);
   set_analytical_solution_DBC_1D(EX_SOL, X, &la, &T0, &T1);
+  
+  //
+  for(int i= 0; i<la; i++)
+  {
+      Y_test_dgmv[i] = i;
+  }
   
   write_vec(RHS, &la, "RHS.dat");
   write_vec(EX_SOL, &la, "EX_SOL.dat");
@@ -52,11 +69,11 @@ int main(int argc,char *argv[])
   /* working array for pivot used by LU Factorization */
   ipiv = (int *) calloc(la, sizeof(int));
 
-  int row = 0; //
+  int row = 1; //
 
   if (row == 1){ // LAPACK_ROW_MAJOR
     set_GB_operator_rowMajor_poisson1D(AB, &lab, &la);
-    //write_GB_operator_rowMajor_poisson1D(AB, &lab, &la, "AB_row.dat");
+    write_GB_operator_rowMajor_poisson1D(AB, &lab, &la, "AB_row.dat");
     
     info = LAPACKE_dgbsv(LAPACK_ROW_MAJOR,la, kl, ku, NRHS, AB, la, ipiv, RHS, NRHS);
   
@@ -68,6 +85,20 @@ int main(int argc,char *argv[])
     info = LAPACKE_dgbsv(LAPACK_COL_MAJOR,la, kl, ku, NRHS, AB, lab, ipiv, RHS, la);
   }    
 
+  /*
+  if(row == 1){// BLASS_ROW_MAJOR
+      set_GB_operator_rowMajor_poisson1D(AB, &lab, &la);
+      //write_GB_operator_rowMajor_poisson1D(AB, &lab, &la, "AB_row.dat");
+      cblas_dgbmv(CblasRowMajor,CblasNoTrans,la,la,ku,kl,alpha,AB,lab,X_test_dgmv,incx,beta,Y_test_dgmv,incy);
+  }
+  else
+  {
+    // BLASS_COL_MAJOR
+      set_GB_operator_colMajor_poisson1D(AB, &lab, &la,&kv);
+      //write_GB_operator_rowMajor_poisson1D(AB, &lab, &la, "AB_row.dat");
+      cblas_dgbmv(CblasColMajor,CblasNoTrans,la,la,ku,kl,alpha,AB,lab,X_test_dgmv,incx,beta,Y_test_dgmv,incy);
+  }
+  write_vec(Y_test_dgmv, &la, "Y_test_dgmv.dat"); */
   
   printf("\n INFO DGBSV = %d\n",info);
 

@@ -1,4 +1,4 @@
-/**********************************************/
+/*<**********************************************/
 /* lib_poisson1D.c                            */
 /* Numerical library developed to solve 1D    */ 
 /* Poisson problem (Heat equation)            */
@@ -10,16 +10,20 @@ void set_GB_operator_rowMajor_poisson1D(double* AB, int *lab, int *la){
     for(ii = 0; ii < (*lab); ii++)
     {
         kk = ii * (*la);
+        
         for(int p = 0; p < (*la) ; p++)
         {
-            if(ii % 2 == 0)
-                AB[kk + p] = -1.0;
+            if(ii == 0)
+                AB[kk + p] = 0.0;
+            else if (ii == 1 || ii ==3)
+                AB[kk + p] = -1;
             else
                 AB[kk + p] = 2.0;
         }
-        AB[0] = 0.0;
-        AB[(*lab) * (*la) - 1] = 0.0;
+        
     }
+    AB[*la] = 0.0;
+    AB[(*lab) * (*la) - 1] = 0.0;
 }
 
 void set_GB_operator_colMajor_poisson1D(double* AB, int *lab, int *la, int *kv){
@@ -35,7 +39,7 @@ void set_GB_operator_colMajor_poisson1D(double* AB, int *lab, int *la, int *kv){
     AB[kk+ *kv+1]=2.0;
     AB[kk+ *kv+2]=-1.0;
   }
-  AB[0]=0.0;
+  AB[0]=0.0; 
   if (*kv == 1) {AB[1]=0;}
   
   AB[(*lab)*(*la)-1]=0.0;
