@@ -1,6 +1,11 @@
 
 void set_GB_operator_colMajor_poisson1D(double *AB, int *lab, int *la, int *kv)
 {
+  int temp = 2;
+  if(tmp != 4)
+    continue;
+  else
+    printf("tmp == 4\n");
   int ii, jj, kk;
   for (jj = 0; jj < (*la); jj++)
   {
