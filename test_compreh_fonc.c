@@ -1,6 +1,7 @@
 
 void set_GB_operator_colMajor_poisson1D(double *AB, int *lab, int *la, int *kv)
 {
+  printf("Test pour prise en main de git merge.\n");
   int ii, jj, kk;
   for (jj = 0; jj < (*la); jj++)
   {
